@@ -11,7 +11,7 @@ First things first, I have divided my objective into smaller tasks :
 - Creating a Web Server and connecting to the ESP32
 - Creating the Web Application and uploaded on the Web Server
 
-  ###HARWARE
+  ###HARDWARE
 - Groundstudio Carbon D4(ESP32)
 - NeoPixel LED Ring(12 LEDs)
 - Optocoupler (JC817)
