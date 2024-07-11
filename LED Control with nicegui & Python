@@ -1,0 +1,89 @@
+from nicegui import ui
+import requests
+
+ESP32_IP = 'http://192.168.1.10'  
+
+def send_request(endpoint):
+    try:
+        response = requests.get(f'{ESP32_IP}/{endpoint}')
+        if response.status_code == 204:
+            ui.notify(f'{endpoint} a fost executat cu succes', color='green')
+        else:
+            ui.notify(f'Eroare la executarea {endpoint}', color='red')
+    except Exception as e:
+        ui.notify(f'Eroare: {str(e)}', color='red')
+
+def get_status():
+    try:
+        response = requests.get(f'{ESP32_IP}/getstatus', timeout=5)
+        if response.status_code == 200:
+            return response.text.strip().lower()
+        else:
+            return 'Eroare la obținerea statusului'
+    except requests.exceptions.ConnectionError:
+        return 'Conexiune pierdută '
+    except requests.exceptions.Timeout:
+        return 'Eroare la obținerea statusului: Timeout'
+    except Exception as e:
+        return f'Eroare: {str(e)}'
+
+@ui.page('/')
+def main_page():
+    # Aprindem LED-ul alb când pagina este accesată
+    send_request('white')
+
+    # Adăugăm imaginea în colțul dreapta sus ca un logo mai mare
+    ui.image('https://www.ucv.ro/images/logo_ucv2.png').style('position: absolute; top: 20px; right: 20px; width: 150px; height: auto;')
+
+    # Label pentru titlu, centrare pe mijloc
+    ui.label('Control ESP32 RING LED').style('font-size: 24px; margin: 20px auto; text-align: center;')
+
+    # Stil pentru cardul cu butoane (fără chenar)
+    card_style = 'max-width: 400px; margin: auto; padding: 20px; text-align: center; background: linear-gradient(to top, #4299e1, #ebf4ff); border: none; border-radius: 10px;'
+
+    # Card pentru butoane
+    with ui.card().style(card_style):
+        # Feedback vizual pentru aprinderea LED-ului
+        ui.label('LED-ul a fost aprins în alb pentru că server-ul a fost accesat.').style('font-size: 18px; color: black; margin-bottom: 20px;')
+        ui.button('Error', on_click=lambda: send_request('error')).style('background-color: red; color: white; font-size: 18px; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px;')
+        ui.button('Success', on_click=lambda: send_request('success')).style('background-color: green; color: white; font-size: 18px; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px;')
+        ui.button('Warning', on_click=lambda: send_request('warning')).style('background-color: orange; color: white; font-size: 18px; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px;')
+        ui.button('Stop', on_click=lambda: send_request('stop')).style('background-color: grey; color: white; font-size: 18px; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px;')
+        ui.button('Loading', on_click=lambda: send_request('loading')).style('background-color: blue; color: white; font-size: 18px; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px;')
+
+    # Imagini pentru statusurile LED-ului
+    image_urls = {
+        'white': 'https://raw.githubusercontent.com/qAndreea/RING-LED-IMAGES/main/white.png.jfif',
+        'success': 'https://raw.githubusercontent.com/qAndreea/RING-LED-IMAGES/main/success.png.jfif',
+        'warning': 'https://raw.githubusercontent.com/qAndreea/RING-LED-IMAGES/main/warning.png.jfif',
+        'stop': 'https://raw.githubusercontent.com/qAndreea/RING-LED-IMAGES/main/stop.png.jfif',
+        'error': 'https://raw.githubusercontent.com/qAndreea/RING-LED-IMAGES/main/error.png.jfif',
+        'off': 'https://raw.githubusercontent.com/qAndreea/RING-LED-IMAGES/main/stop.png.jfif',  
+        'loading' : 'https://raw.githubusercontent.com/qAndreea/RING-LED-IMAGES/main/loading.image.jfif'
+    }
+
+    # Imaginile pentru statusurile LED-ului (inițial ascunse)
+    status_images = {status: ui.image('').style('width: 100px; height: auto; display: none; margin-top: 20px;') for status in image_urls.keys()}
+
+    # Funcția pentru actualizarea statusului LED-ului și a imaginilor corespunzătoare
+    def update_status():
+        status = get_status()
+        status_label.set_text(f'Statusul LED-ului: {status}')
+        
+        for key, image in status_images.items():
+            if status == key:
+                image.set_source(image_urls[key])
+                image.style('display: block;')
+            else:
+                image.style('display: none;')
+
+    # Pornim actualizarea periodică la fiecare 3 secunde
+    ui.timer(3.0, update_status)
+
+    # Label pentru statusul LED-ului
+    status_label = ui.label('Statusul LED-ului: Necunoscut').style('font-size: 18px; margin-top: 20px; text-align: center;')
+
+    # Setăm background
+    ui.query('body').style('background: linear-gradient(to top, #4299e1, #ebf4ff);')
+
+ui.run(port=5000)
