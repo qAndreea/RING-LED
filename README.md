@@ -34,6 +34,12 @@ First things first, I have divided my objective into smaller tasks :
  5. Error Button: the machine encounters a problem and the ESP32 detects an error, the red LED lights up and the machine is turned off.
 
 
+- The ESP32 constantly monitors machine status, including normal operation, detected errors, and charging or processing status.
+- A simple and intuitive web application is developed using Python and to control and monitor machine status. The operator can access this interface from a device connected to the local network.
+- In the event of a problem or a change in status, the system automatically sends notifications to the operator via the web interface and/or LEDs - which light up depending on the situation.
+
+
+
  **How to - Step by step**
 
 1. Wiring the hardware components on the breadboard
