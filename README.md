@@ -52,7 +52,7 @@ First things first, I have divided my objective into smaller tasks :
 
 2. Writing, compiling and uploading the source code
 
-   https://youtu.be/deocbepRT2o
+https://youtu.be/I2q_ltoHpmg
 
    
 
