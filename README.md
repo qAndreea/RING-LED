@@ -1,6 +1,6 @@
 # RING-LED ESP32
 
-I created a project within the Faculty of Automation, Computers and Electronics in Craiova, as part of the internship program. My project consists of controlling a ring of NeoPixel LEDs using an ESP32. I developed a web interface in Python with the nicegui library to manage the LEDs and programmed the ESP32 using Arduino to control them. 
+I created a project within the Faculty of Automation, Computers and Electronics in Craiova, as part of the practice program. My project consists of controlling a ring of NeoPixel LEDs using an ESP32. I developed a web interface in Python with the nicegui library to manage the LEDs and programmed the ESP32 using Arduino to control them. 
 The flexibility of the design allows both mains and battery operation, facilitating integration into various applications and usage scenarios.
 
 First things first, I have divided my objective into smaller tasks : 
