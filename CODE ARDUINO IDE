@@ -41,7 +41,7 @@ void handleRoot() {
                 "<a href='/warning' class='button warning'>Warning</a>"
                 "<a href='/loading' class='button loading'>Loading</a>"
                 "<a href='/stop' class='stop-button'>Stop</a>"
-                "<img src='https://www.ucv.ro/images/logo_ucv2.png' class='logo'>"
+                "<img src='https://reporter24.ro/wp-content/uploads/2021/06/ACE_logo5.png' class='logo'>"
                 "</body>"
                 "</html>";
   server.send(200, "text/html", html);
