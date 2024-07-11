@@ -33,7 +33,7 @@ def main_page():
     send_request('white')
 
     # Adăugăm imaginea în colțul dreapta sus ca un logo mai mare
-    ui.image('https://www.ucv.ro/images/logo_ucv2.png').style('position: absolute; top: 20px; right: 20px; width: 150px; height: auto;')
+    ui.image('https://reporter24.ro/wp-content/uploads/2021/06/ACE_logo5.png').style('position: absolute; top: 20px; right: 20px; width: 150px; height: auto;')
 
     # Label pentru titlu, centrare pe mijloc
     ui.label('Control ESP32 RING LED').style('font-size: 24px; margin: 20px auto; text-align: center;')
